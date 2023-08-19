@@ -2,11 +2,20 @@ import { User } from "./user.entity";
 
 
 export class Tweet{
-  private user: User;
-  private tweet: string;
+  private _user: User;
+  private _tweet: string;
 
   constructor(user: User, tweet: string){
-    this.user = user;
-    this.tweet = tweet;
+    this._user = user;
+    this._tweet = tweet;
   }
+
+  get user() {
+    return this._user;
+  }
+
+  get tweet(){
+    return this._tweet;
+  }
+  
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { User } from './entities/user.entity';
 import { CreateUserDTO } from './dtos/create-user.dto';
@@ -17,17 +17,18 @@ export class AppController {
   @Post("/sign-up")
   postUsers(@Body() body: CreateUserDTO, @Res() res: Response){
     //fazer retorno de 200
-    const user = this.appService.postUsers(body)
+    const user = this.appService.postUsers(body);
     res.status(200).json(user);
   }
 
   @Post("/tweets")
   postTweets(@Body() body: CreateTweetDTO){
-    return this.appService.postTweets(body)
+    return this.appService.postTweets(body);
   }
 
   @Get("/tweets")
-  getTweets(){
-    return 
+  getTweets(@Query('page') pageParam:string){
+    const page = parseInt(pageParam);
+    return this.appService.getTweets(page);
   }
 }

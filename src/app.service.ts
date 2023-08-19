@@ -26,11 +26,42 @@ export class AppService {
   postTweets(body: CreateTweetDTO){
     const user = this.users.find((user) => user.username === body.username)
     if(!user) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN)
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
     }
     
     const tweet = new Tweet(user, body.tweet);
     return this.tweets.push(tweet)
 
+  }
+
+  getTweets(page: number){
+    const tweetInScreen = []
+    if(page < 1){
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+    }
+    if(!page || page===1){
+      const last15tweetrs = this.tweets.slice(-15);
+      last15tweetrs.forEach((tweeter) =>{
+          const username = tweeter.user.username
+          const avatar = tweeter.user.avatar
+          const tweet = tweeter.tweet;
+          tweetInScreen.push({username, avatar, tweet});
+      })
+      
+      return tweetInScreen
+    }
+
+    const begin = (page - 1) * 15 + 1;
+    const end = begin + 14;
+
+    const last15tweets = this.tweets.slice(-end, -begin + 1);
+
+    last15tweets.forEach((tweeter) => {
+      const username = tweeter.user.username
+      const avatar = tweeter.user.avatar
+      const tweet = tweeter.tweet;
+      tweetInScreen.push({ username, avatar, tweet });
+    });
+    return tweetInScreen;
   }
 }
