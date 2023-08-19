@@ -9,6 +9,11 @@ import { Response } from 'express';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get()
+  getHello(): string {
+    return this.appService.getHello();
+  }
+
   @Post("/sign-up")
   postUsers(@Body() body: CreateUserDTO, @Res() res: Response){
     //fazer retorno de 200

@@ -14,6 +14,9 @@ export class AppService {
     this.users = [];
     this.tweets = [];
   }
+  getHello(): string {
+    return "I'm okay!";
+  }
 
   postUsers(newUser: CreateUserDTO){
     const user = new User(newUser.username, newUser.avatar)
