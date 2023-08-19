@@ -64,4 +64,17 @@ export class AppService {
     });
     return tweetInScreen;
   }
+
+  getTweetsFromUser(username: string){
+    const tweeters = this.tweets.filter((tweet) => tweet.user.username === username)
+    const tweetInScreen = [];
+
+    tweeters.forEach((tweeter) => {
+      const username = tweeter.user.username
+      const avatar = tweeter.user.avatar
+      const tweet = tweeter.tweet;
+      tweetInScreen.push({ username, avatar, tweet });
+    });
+    return tweetInScreen;
+  }
 }
