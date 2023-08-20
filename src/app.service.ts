@@ -3,7 +3,6 @@ import { User } from './entities/user.entity';
 import { CreateUserDTO } from './dtos/create-user.dto';
 import { CreateTweetDTO } from './dtos/create-tweet.dto';
 import { Tweet } from './entities/tweet';
-import { error } from 'console';
 
 @Injectable()
 export class AppService {
@@ -19,36 +18,36 @@ export class AppService {
   }
 
   postUsers(newUser: CreateUserDTO){
-    const user = new User(newUser.username, newUser.avatar)
+    const user = new User(newUser.username, newUser.avatar);
     return this.users.push(user);
   }
 
   postTweets(body: CreateTweetDTO){
-    const user = this.users.find((user) => user.username === body.username)
+    const user = this.users.find((user) => user.username === body.username);
     if(!user) {
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
     
     const tweet = new Tweet(user, body.tweet);
-    return this.tweets.push(tweet)
+    return this.tweets.push(tweet);
 
   }
 
   getTweets(page: number){
-    const tweetInScreen = []
+    const tweetInScreen = [];
     if(page < 1){
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST)
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
     if(!page || page===1){
       const last15tweetrs = this.tweets.slice(-15);
       last15tweetrs.forEach((tweeter) =>{
-          const username = tweeter.user.username
-          const avatar = tweeter.user.avatar
+          const username = tweeter.user.username;
+          const avatar = tweeter.user.avatar;
           const tweet = tweeter.tweet;
           tweetInScreen.push({username, avatar, tweet});
       })
       
-      return tweetInScreen
+      return tweetInScreen;
     }
 
     const begin = (page - 1) * 15 + 1;
@@ -57,8 +56,8 @@ export class AppService {
     const last15tweets = this.tweets.slice(-end, -begin + 1);
 
     last15tweets.forEach((tweeter) => {
-      const username = tweeter.user.username
-      const avatar = tweeter.user.avatar
+      const username = tweeter.user.username;
+      const avatar = tweeter.user.avatar;
       const tweet = tweeter.tweet;
       tweetInScreen.push({ username, avatar, tweet });
     });
@@ -66,12 +65,12 @@ export class AppService {
   }
 
   getTweetsFromUser(username: string){
-    const tweeters = this.tweets.filter((tweet) => tweet.user.username === username)
+    const tweeters = this.tweets.filter((tweet) => tweet.user.username === username);
     const tweetInScreen = [];
 
     tweeters.forEach((tweeter) => {
-      const username = tweeter.user.username
-      const avatar = tweeter.user.avatar
+      const username = tweeter.user.username;
+      const avatar = tweeter.user.avatar;
       const tweet = tweeter.tweet;
       tweetInScreen.push({ username, avatar, tweet });
     });
